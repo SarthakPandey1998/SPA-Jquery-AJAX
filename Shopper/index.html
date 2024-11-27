@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopper</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../jquery-ui/jquery-ui.js"></script>
+    <script src="../../jquery-ui/jquery-ui.css"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <script type="text/javascript">
+        function LoadPage(urlPath) {
+            $.ajax({
+                method: "get",
+                url: urlPath,
+                success: (response) => {
+                    $("section").html(response);
+                },
+                error: (e, status, err) => {
+                    console.log(err);
+                }
+
+            })
+        }
+
+        $(function () {
+
+            LoadPage("./login.html");
+
+            $("#btnHome").click((e) => {
+                LoadPage("./home.html");
+            })
+            $("#btnMen").click((e) => {
+                LoadPage("./men.html");
+            })
+            $("#btnWomen").click((e) => {
+                LoadPage("./women.html");
+            })
+            $("#btnKids").click((e) => {
+                LoadPage("./kids.html");
+            })
+            $("#btnSignin").click((e) => {
+                LoadPage("./login.html");
+            })
+
+            $(document).on("click", "#btnLogin", (e) => {
+                if ($("#txtUser").val() === "admin@gmail.com" && $("#txtPassword").val() === "admin@123") {
+                    LoadPage("./home.html");
+                    $("#btnHome").click();
+                }
+                else {
+                    LoadPage("./error.html");
+                }
+            }
+            )
+
+            $(document).on("click", "#btnHome", () => {
+                fetch("https://fakestoreapi.com/products")
+                    .then((res) => res.json())
+                    .then((products) => {
+                        products.map((product, index) => {
+                            $(`<div class="card m-2 p-2" style="width:200px">
+                            <img class="card-img-top" src=${product.image} width="150" height="200"/>
+                            <div class="card-header" style="height:180px">
+                                <p>${product.title}</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-center">${product.price.toLocaleString('en-in', { style: "currency", currency: "USD" })}</p>
+                            </div>
+                            <div class="card-footer">
+                                <button id="btnCart" class="bi bi-cart4 btn btn-warning w-100"> Add to Cart</button>
+                            </div>
+                        </div>`).appendTo("main");
+                        })
+                    })
+            })
+
+            $(document).on("click", "#btnCart", (e) => {
+                alert(`Product is added to cart`);
+            })
+
+            $(document).on("click", "#btnToggle", () => {
+                $("#men-fashion").toggle(3000);
+            })
+
+            $(document).on("click","#btndraggable",()=>{
+                $("#draggable").draggable();
+            })
+
+            $(document).on("click","#btnArrange",()=>{
+                $("#arrange").sortable();
+            })
+
+            $(document).on("click", "#login", () => {
+                LoadPage("./login.html");
+            })
+
+        })
+    </script>
+</head>
+
+<body class="container-fluid">
+    <h2 class="text-primary bg-dark px-3 py-2">Shopper</h2>
+    <nav class="p-2">
+        <button class="btn btn-outline-primary" id="btnHome">Home</button>
+        <button class="btn btn-outline-primary" id="btnMen">Men</button>
+        <button class="btn btn-outline-primary" id="btnWomen">Women</button>
+        <button class="btn btn-outline-primary" id="btnKids">Kids</button>
+        <button class="btn btn-outline-primary" id="btnSignin">Signin</button>
+    </nav>
+    <hr>
+    <section>
+
+    </section>
+</body>
+
+</html>
